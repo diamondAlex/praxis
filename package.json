@@ -1,0 +1,10 @@
+{
+  "name": "practicer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "alexd <alex.d.doc@gmail.com>",
+  "license": "MIT",
+  "scripts":{
+      "start": "xdg-open src/test.html"
+  }
+}
