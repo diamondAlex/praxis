@@ -1,18 +1,25 @@
 let url = "http://localhost:8080/check"
 
-function checkMove(move){
+async function checkMove(move){
     console.log("in check move")
-    fetch(url, {
+    let res = await fetch(url, {
         method:"POST",
         body:move
     })
-    .then((res) => res.text())
-    .then((text) => console.log(text))
+    let text = await res.text()
+    if(text === "0"){
+        console.log("should snapback, whatever the fuck that is")
+        return "snapback"
+    }
+    else{
+        console.log("shouldnt snapback")
+        return null
+    }
 }
 
-function onDrop (source, target, piece, newPos, oldPos, orientation) {
+async function onDrop (source, target, piece, newPos, oldPos, orientation) {
     let move = source + target
-    checkMove(move)
+    return checkMove(move)
 }
 
 var board1 = Chessboard('myBoard',{

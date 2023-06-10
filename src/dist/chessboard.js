@@ -6,7 +6,7 @@
 // https://github.com/oakmac/chessboardjs/blob/master/LICENSE.md
 
 // start anonymous scope
-;(function () {
+;(async function () {
   'use strict'
 
   var $ = window['jQuery']
@@ -1355,7 +1355,7 @@
       draggedPieceLocation = location
     }
 
-    function stopDraggedPiece (location) {
+    async function stopDraggedPiece (location) {
       // determine what the action should be
       var action = 'drop'
       if (location === 'offboard' && config.dropOffBoard === 'snapback') {
@@ -1394,7 +1394,7 @@
 
         var oldPosition = deepCopy(currentPosition)
 
-        var result = config.onDrop(
+        var result = await config.onDrop(
           draggedPieceSource,
           location,
           draggedPiece,
@@ -1402,6 +1402,7 @@
           oldPosition,
           currentOrientation
         )
+        console.log(result)
         if (result === 'snapback' || result === 'trash') {
           action = result
         }

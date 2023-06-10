@@ -5,6 +5,7 @@ import chess
 
 hostName = "localhost"
 serverPort = 8080
+
 board = chess.Board()
 
 class MyServer(BaseHTTPRequestHandler):
@@ -25,19 +26,19 @@ class MyServer(BaseHTTPRequestHandler):
     #handle post
     def do_POST(self):
         print("IN do_POST")
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
         length = int(self.headers.get('content-length'))
-        print(length)
         data = self.rfile.read(length).decode('utf-8')
         print(data)
         legal_moves = list(board.legal_moves)
         if chess.Move.from_uci(data) in legal_moves:
             print("legal")
+            self.wfile.write(bytes("1", "utf-8"))
         else:
             print("not legal")
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        self.wfile.write(bytes("hi", "utf-8"))
+            self.wfile.write(bytes("0", "utf-8"))
 
 if __name__ == "__main__":        
     webServer = HTTPServer((hostName, serverPort), MyServer)
