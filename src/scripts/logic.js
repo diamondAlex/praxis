@@ -1,8 +1,16 @@
-let url = "http://localhost:8080/check"
+let url = "http://localhost:8080/"
+
+const START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
+
+function resetServer(){
+    let res =  fetch(url + "reset", {
+        method:"POST",
+    })
+}
 
 async function checkMove(move){
     console.log("in check move")
-    let res = await fetch(url, {
+    let res = await fetch(url + 'valid', {
         method:"POST",
         body:move
     })
@@ -22,10 +30,31 @@ async function onDrop (source, target, piece, newPos, oldPos, orientation) {
     return checkMove(move)
 }
 
-var board1 = Chessboard('myBoard',{
+var board = Chessboard('myBoard',{
     draggable: true,
     dropOffBoard: 'trash',
     onDrop: onDrop
 })
 
-board1.start()
+
+board.start()
+
+//---------------- interface -----------------
+
+function addResetButton(){
+    let div = document.getElementById("util")
+    let button = document.createElement("button")
+    button.innerHTML = "reset"
+    button.addEventListener("click", () =>{
+        board.position(START_FEN)
+        resetServer()
+    })
+    div.appendChild(button)
+}
+
+function setInterface(){
+    addResetButton()
+
+}
+
+setInterface()
