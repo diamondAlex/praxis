@@ -1,0 +1,3 @@
+moving to chessjs, keeping python for eventual engine use
+implement basic chessboardjs api
+make draggin pieces off the board snap back instead of deleting piece

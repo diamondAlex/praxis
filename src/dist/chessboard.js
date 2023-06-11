@@ -1402,7 +1402,6 @@
           oldPosition,
           currentOrientation
         )
-        console.log(result)
         if (result === 'snapback' || result === 'trash') {
           action = result
         }
@@ -1664,25 +1663,35 @@
 
     var throttledTouchmoveWindow = throttle(touchmoveWindow, config.dragThrottleRate)
 
+    function preventContextMenu(evt){
+        console.log(isDragging)
+        if (isDragging) return false
+        //evt.preventDefault()
+    }
+
     function mouseupWindow (evt) {
-      // do nothing if we are not dragging a piece
-      if (!isDragging) return
+        if(evt.which == 1){
+            // do nothing if we are not dragging a piece
+            if (!isDragging) return
 
-      // get the location
-      var location = isXYOnSquare(evt.pageX, evt.pageY)
+            // get the location
+            var location = isXYOnSquare(evt.pageX, evt.pageY)
+        }
+        console.log("should be here")
 
-      stopDraggedPiece(location)
+        stopDraggedPiece(location)
     }
 
     function touchendWindow (evt) {
-      // do nothing if we are not dragging a piece
-      if (!isDragging) return
+        // do nothing if we are not dragging a piece
+        if (evt.which == 3) return
+        if (!isDragging) return
 
-      // get the location
-      var location = isXYOnSquare(evt.originalEvent.changedTouches[0].pageX,
-        evt.originalEvent.changedTouches[0].pageY)
+        // get the location
+        var location = isXYOnSquare(evt.originalEvent.changedTouches[0].pageX,
+            evt.originalEvent.changedTouches[0].pageY)
 
-      stopDraggedPiece(location)
+        stopDraggedPiece(location)
     }
 
     function mouseenterSquare (evt) {
@@ -1755,6 +1764,7 @@
       $window
         .on('mousemove', throttledMousemoveWindow)
         .on('mouseup', mouseupWindow)
+        .on('contextmenu', preventContextMenu)
 
       // touch drag pieces
       if (isTouchDevice()) {

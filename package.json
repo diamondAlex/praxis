@@ -4,7 +4,10 @@
   "main": "index.js",
   "author": "alexd <alex.d.doc@gmail.com>",
   "license": "MIT",
-  "scripts":{
-      "start": "xdg-open src/test.html"
+  "scripts": {
+    "start": "xdg-open src/test.html"
+  },
+  "dependencies": {
+    "chess.js": "^1.0.0-beta.6"
   }
 }

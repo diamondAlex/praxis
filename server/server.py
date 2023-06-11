@@ -25,6 +25,25 @@ class MyServer(BaseHTTPRequestHandler):
 
     #handle post
     def do_POST(self):
+        if self.path == '/valid':
+            self.check_move_validity()
+        elif self.path == '/reset':
+            print("in reset")
+            self.resetBoard()
+        else:
+            self.send_response(404)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            
+
+    def resetBoard(self):
+        print("in reset")
+        board.reset()
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+
+    def check_move_validity(self):
         print("IN do_POST")
         self.send_response(200)
         self.send_header("Content-type", "text/html")
@@ -33,8 +52,10 @@ class MyServer(BaseHTTPRequestHandler):
         data = self.rfile.read(length).decode('utf-8')
         print(data)
         legal_moves = list(board.legal_moves)
+        print(legal_moves)
         if chess.Move.from_uci(data) in legal_moves:
             print("legal")
+            board.push(chess.Move.from_uci(data))
             self.wfile.write(bytes("1", "utf-8"))
         else:
             print("not legal")
