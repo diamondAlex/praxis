@@ -88,25 +88,6 @@ var config = {
     onDrop: onDrop,
     onSnapEnd: onSnapEnd
 }
-board = Chessboard('myBoard', config)
 
-updateStatus()
-//---------------- interface -----------------
+board = Chessboard('board', config)
 
-function addResetButton(){
-    let div = document.getElementById("util")
-    let button = document.createElement("button")
-    button.innerHTML = "reset"
-    button.addEventListener("click", () =>{
-        board.position(START_FEN)
-        resetServer()
-    })
-    div.appendChild(button)
-}
-
-function setInterface(){
-    addResetButton()
-
-}
-
-setInterface()
