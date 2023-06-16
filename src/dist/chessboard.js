@@ -1665,19 +1665,25 @@
 
     function preventContextMenu(evt){
         if (isDragging) return false
-        //evt.preventDefault()
+        evt.preventDefault()
     }
 
     function mouseupWindow (evt) {
-        if(evt.button == 1){
+        console.log(evt.button)
+        if(evt.button == 2){
             // do nothing if we are not dragging a piece
             if (!isDragging) return
 
-            // get the location
-            var location = isXYOnSquare(evt.pageX, evt.pageY)
+            snapbackDraggedPiece()
+            isDragging = false
+            return
         }
 
-        stopDraggedPiece(location)
+        if(isDragging){
+            // get the location
+            var location = isXYOnSquare(evt.pageX, evt.pageY)
+            stopDraggedPiece(location)
+        }
     }
 
     function touchendWindow (evt) {
