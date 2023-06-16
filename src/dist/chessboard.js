@@ -1664,20 +1664,18 @@
     var throttledTouchmoveWindow = throttle(touchmoveWindow, config.dragThrottleRate)
 
     function preventContextMenu(evt){
-        console.log(isDragging)
         if (isDragging) return false
         //evt.preventDefault()
     }
 
     function mouseupWindow (evt) {
-        if(evt.which == 1){
+        if(evt.button == 1){
             // do nothing if we are not dragging a piece
             if (!isDragging) return
 
             // get the location
             var location = isXYOnSquare(evt.pageX, evt.pageY)
         }
-        console.log("should be here")
 
         stopDraggedPiece(location)
     }

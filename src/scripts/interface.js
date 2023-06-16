@@ -10,6 +10,16 @@ let setPage = () =>{
     root.appendChild(util)
 }
 
+function addFlipButton(){
+    let div = document.getElementById("util")
+    let button = document.createElement("button")
+    button.innerHTML = "flip"
+    button.addEventListener("click", () =>{
+        board.flip()
+    })
+    div.appendChild(button)
+}
+
 function addResetButton(){
     let div = document.getElementById("util")
     let button = document.createElement("button")
@@ -24,6 +34,7 @@ function addResetButton(){
 function setInterface(){
     setPage()
     addResetButton()
+    addFlipButton()
 }
 
 setInterface()

@@ -5,11 +5,9 @@ var board = null
 var game = new Chess()
 var piece_status = false
 
-
-document.addEventListener("mousedown", (e) =>{
-    if ( piece_status && e.which == 3 ) {
-        e.preventDefault()
-        console.log(board)
+document.addEventListener("keypress", (e) =>{
+    if(e.key == "KeyF"){
+        board.flip()
     }
 })
 
