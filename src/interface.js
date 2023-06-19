@@ -1,13 +1,16 @@
 let setPage = () =>{
     let root = document.getElementById("root")
+    let left = document.createElement("div")
+    left.className = "left"
     let board = document.createElement("div")
     board.id = "board"
     board.className = "board"
     let util = document.createElement("div")
     util.id = "util"
 
-    root.appendChild(board)
-    root.appendChild(util)
+    left.appendChild(board)
+    left.appendChild(util)
+    root.appendChild(left)
 }
 
 function addColorSelect(){
@@ -46,8 +49,21 @@ function addResetButton(){
     div.appendChild(button)
 }
 
+function addPanel(){
+    let root = document.getElementById('root')
+    let right = document.createElement("div")
+    right.className = "right"
+    right.innerHTML = "TESTIINNNNGGGG "
+    let moveList = document.createElement("div")
+    moveList.id = "moveList"
+
+    right.appendChild(moveList)
+    root.appendChild(right)
+}
+
 function setInterface(){
     setPage()
+    addPanel()
     addResetButton()
     addFlipButton()
     addColorSelect()

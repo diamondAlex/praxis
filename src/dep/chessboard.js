@@ -495,7 +495,6 @@
   // with the moves executed
   function calculatePositionFromMoves (position, moves) {
     var newPosition = deepCopy(position)
-      console.log(moves)
 
     for (var i in moves) {
       if (!moves.hasOwnProperty(i)) continue
@@ -1467,15 +1466,13 @@
 
         // skip invalid arguments
         if (!validMove(arguments[i])) {
-          console.log(2826, 'Invalid move passed to the move method.', arguments[i])
+          error(2826, 'Invalid move passed to the move method.', arguments[i])
           continue
         }
 
         var tmp = arguments[i].split('-')
         moves[tmp[0]] = tmp[1]
       }
-
-        console.log(moves)
 
       // calculate position from moves
       var newPos = calculatePositionFromMoves(currentPosition, moves)

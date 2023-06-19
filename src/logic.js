@@ -41,6 +41,7 @@ function onDrop (source, target) {
     // illegal move
     if (move === null) return 'snapback'
 
+    addMoveToList(source,target)
     piece_status = false
     updateStatus()
 }
@@ -102,8 +103,19 @@ function playEngineMove (source, target) {
 
     board.move(source+"-"+target)
 
+    addMoveToList(source,target)
     piece_status = false
     updateStatus()
+}
+
+function addMoveToList(source,target){
+    let moveList = document.getElementById("moveList")
+    if(moveList.innerHTML.slice(-1) == "-"){
+        moveList.innerHTML = moveList.innerHTML + source + target + "<br>"
+    }
+    else{
+        moveList.innerHTML = moveList.innerHTML + source + target + "-"
+    }
 }
 
 function getMoveFromEngine(fen){
@@ -112,20 +124,15 @@ function getMoveFromEngine(fen){
         method:"POST",
         body: fen
     })
-        .then((ret) => {
-            let reader = ret.body.getReader()
-            reader.read()
-                .then(({done,value}) =>{
-                    if(done){
-                        console.log('done')
-                    }
-                    else{
-                        let move = String.fromCharCode(...value)
-                        console.log('should play??')
-                        playEngineMove(move.slice(0,2),move.slice(2,4))
-                    }
-                })
+    .then((ret) => {
+        ret.body.getReader().read()
+        .then(({done,value}) =>{
+            if(!done){
+                let move = String.fromCharCode(...value)
+                playEngineMove(move.slice(0,2),move.slice(2,4))
+            }
         })
+    })
 }
 
 var config = {

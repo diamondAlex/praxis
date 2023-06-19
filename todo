@@ -1,3 +1,4 @@
+castling is wonky, at least when the engine makes it (it calls board.move() directly, which might be the problem)
 make engine play opponent move
 add a recommended engine move
 add games
