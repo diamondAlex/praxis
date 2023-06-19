@@ -42,10 +42,7 @@ function addResetButton(){
     let div = document.getElementById("util")
     let button = document.createElement("button")
     button.innerHTML = "reset"
-    button.addEventListener("click", () =>{
-        board.position("start")
-        game.reset()
-    })
+    button.id = "reset"
     div.appendChild(button)
 }
 
@@ -53,7 +50,7 @@ function addPanel(){
     let root = document.getElementById('root')
     let right = document.createElement("div")
     right.className = "right"
-    right.innerHTML = "TESTIINNNNGGGG "
+    right.innerHTML = "Moves played : <br>"
     let moveList = document.createElement("div")
     moveList.id = "moveList"
 

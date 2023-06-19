@@ -3,7 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 import chess
 import chess.engine
-engine = chess.engine.SimpleEngine.popen_uci(r"server/stockfish7")
+engine = chess.engine.SimpleEngine.popen_uci(r"server/engines/stockfish7")
 
 hostName = "localhost"
 serverPort = 8081

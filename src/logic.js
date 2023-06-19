@@ -6,6 +6,8 @@ var game = new Chess()
 var piece_status = false
 var playerColor = "w"
 
+var moves = []
+
 document.addEventListener("keypress", (e) =>{
     if(e.key == "KeyF"){
         board.flip()
@@ -110,11 +112,17 @@ function playEngineMove (source, target) {
 
 function addMoveToList(source,target){
     let moveList = document.getElementById("moveList")
-    if(moveList.innerHTML.slice(-1) == "-"){
-        moveList.innerHTML = moveList.innerHTML + source + target + "<br>"
-    }
-    else{
-        moveList.innerHTML = moveList.innerHTML + source + target + "-"
+    moveList.innerHTML = ""
+    moves.push(source+target)
+    let i = 0
+    for(let move of moves){
+        if(i%2 == 0){
+            moveList.innerHTML = moveList.innerHTML + move + " - "
+        }
+        else{
+            moveList.innerHTML = moveList.innerHTML + move  + "<br>"
+        }
+        i++
     }
 }
 
@@ -135,6 +143,10 @@ function getMoveFromEngine(fen){
     })
 }
 
+function clearPanel(){
+    document.getElementById("moveList").innerHTML = ""
+}
+
 var config = {
     draggable: true,
     position: 'start',
@@ -149,4 +161,10 @@ board = Chessboard('board', config)
 document.getElementById("color").addEventListener("change", (e) =>{
     playerColor = e.target.value.slice(0,1)
     console.log(playerColor)
+})
+
+document.getElementById("reset").addEventListener("click", () =>{
+    board.position("start")
+    clearPanel()
+    game.reset()
 })
