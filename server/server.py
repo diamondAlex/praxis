@@ -2,11 +2,12 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 import chess
+import chess.engine
+engine = chess.engine.SimpleEngine.popen_uci(r"server/stockfish7")
 
 hostName = "localhost"
-serverPort = 8080
+serverPort = 8081
 
-board = chess.Board()
 
 class MyServer(BaseHTTPRequestHandler):
     #set cors headers
@@ -17,49 +18,22 @@ class MyServer(BaseHTTPRequestHandler):
         return super(MyServer, self).end_headers()
 
     #handle get
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        self.wfile.write(bytes("<div> sup </div>", "utf-8"))
+    def do_POST(self):
+        self.find_move()
 
     #handle post
-    def do_POST(self):
-        if self.path == '/valid':
-            self.check_move_validity()
-        elif self.path == '/reset':
-            print("in reset")
-            self.resetBoard()
-        else:
-            self.send_response(404)
-            self.send_header("Content-type", "text/html")
-            self.end_headers()
-            
+    # def do_POST(self):
 
-    def resetBoard(self):
-        print("in reset")
-        board.reset()
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-
-    def check_move_validity(self):
-        print("IN do_POST")
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
+    def find_move(self):
         length = int(self.headers.get('content-length'))
         data = self.rfile.read(length).decode('utf-8')
-        print(data)
-        legal_moves = list(board.legal_moves)
-        print(legal_moves)
-        if chess.Move.from_uci(data) in legal_moves:
-            print("legal")
-            board.push(chess.Move.from_uci(data))
-            self.wfile.write(bytes("1", "utf-8"))
-        else:
-            print("not legal")
-            self.wfile.write(bytes("0", "utf-8"))
+        board = chess.Board(data)
+        move = engine.play(board, chess.engine.Limit(time=0.1))
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        print(move.move.uci())
+        self.wfile.write(bytes(move.move.uci(), "utf-8"))
 
 if __name__ == "__main__":        
     webServer = HTTPServer((hostName, serverPort), MyServer)

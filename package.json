@@ -5,9 +5,11 @@
   "author": "alexd <alex.d.doc@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "xdg-open src/test.html"
+    "start": "xdg-open src/test.html",
+    "serve": "nodemon server/server.py"
   },
   "dependencies": {
-    "chess.js": "^1.0.0-beta.6"
+    "chess.js": "^1.0.0-beta.6",
+    "nodemon": "^2.0.22"
   }
 }

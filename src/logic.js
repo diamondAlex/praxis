@@ -4,6 +4,7 @@
 var board = null
 var game = new Chess()
 var piece_status = false
+var playerColor = "w"
 
 document.addEventListener("keypress", (e) =>{
     if(e.key == "KeyF"){
@@ -23,6 +24,7 @@ function onDragStart (source, piece, position, orientation) {
     piece_status = true
 }
 
+//rename cause it does all moves
 function onDrop (source, target) {
     // see if the move is legal
     try{
@@ -52,7 +54,6 @@ function onSnapEnd () {
 function updateStatus () {
     var status = ''
 
-    var moveColor = 'White'
     if (game.turn() === 'b') {
         moveColor = 'Black'
     }
@@ -63,20 +64,68 @@ function updateStatus () {
     }
 
     // draw?
-        else if (game.isDraw()) {
-            status = 'Game over, drawn position'
-        }
+    else if (game.isDraw()) {
+        status = 'Game over, drawn position'
+    }
 
     // game still on
     else {
         status = moveColor + ' to move'
-
         // check?
-            if (game.isCheck()) {
-                status += ', ' + moveColor + ' is in check'
-            }
+        if (game.isCheck()) {
+            status += ', ' + moveColor + ' is in check'
+        }
     }
 
+    if(game.turn() != playerColor){
+        //for now using this fen, even tho it's generated every call
+        getMoveFromEngine(game.fen())
+    }
+}
+
+//merge with ondrop
+function playEngineMove (source, target) {
+    // see if the move is legal
+    try{
+        var move = game.move({
+            from: source,
+            to: target,
+            promotion: 'q' // NOTE: always promote to a queen for example simplicity
+        })
+    }
+    catch(err){
+        return 'snapback' 
+    }
+
+    // illegal move
+    if (move === null) return 'snapback'
+
+    board.move(source+"-"+target)
+
+    piece_status = false
+    updateStatus()
+}
+
+function getMoveFromEngine(fen){
+    let url = "http://localhost:8081/"
+    fetch(url, {
+        method:"POST",
+        body: fen
+    })
+        .then((ret) => {
+            let reader = ret.body.getReader()
+            reader.read()
+                .then(({done,value}) =>{
+                    if(done){
+                        console.log('done')
+                    }
+                    else{
+                        let move = String.fromCharCode(...value)
+                        console.log('should play??')
+                        playEngineMove(move.slice(0,2),move.slice(2,4))
+                    }
+                })
+        })
 }
 
 var config = {
@@ -89,3 +138,8 @@ var config = {
 
 board = Chessboard('board', config)
 
+//EVENTS
+document.getElementById("color").addEventListener("change", (e) =>{
+    playerColor = e.target.value.slice(0,1)
+    console.log(playerColor)
+})

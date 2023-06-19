@@ -10,6 +10,21 @@ let setPage = () =>{
     root.appendChild(util)
 }
 
+function addColorSelect(){
+    let div = document.getElementById("util")
+    let select = document.createElement("select")
+    select.id = "color"
+    let option1 = document.createElement("option")
+    option1.value = "white"
+    option1.innerHTML = "white"
+    option1.selected="selected"
+    let option2 = document.createElement("option")
+    option2.value = "black"
+    option2.innerHTML = "black"
+    select.appendChild(option1)
+    select.appendChild(option2)
+    div.appendChild(select)
+}
 function addFlipButton(){
     let div = document.getElementById("util")
     let button = document.createElement("button")
@@ -35,6 +50,7 @@ function setInterface(){
     setPage()
     addResetButton()
     addFlipButton()
+    addColorSelect()
 }
 
 setInterface()

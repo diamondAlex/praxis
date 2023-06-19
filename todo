@@ -1,3 +1,5 @@
-moving to chessjs, keeping python for eventual engine use
-implement basic chessboardjs api
-make draggin pieces off the board snap back instead of deleting piece
+make engine play opponent move
+add a recommended engine move
+add games
+add a way for opposite side to play most played move from a db of games
+no reason to be querying the pieces everytime
