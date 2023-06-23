@@ -46,24 +46,34 @@ function addResetButton(){
     div.appendChild(button)
 }
 
-function addPanel(){
+function addRight(){
     let root = document.getElementById('root')
     let right = document.createElement("div")
+    right.id = "right"
     right.className = "right"
-    right.innerHTML = "Moves played : <br>"
+
+    root.appendChild(right)
+}
+function addPanel(){
+    let right = document.getElementById("right")
     let moveList = document.createElement("div")
+    moveList.className = "panel"
     moveList.id = "moveList"
+    let eval = document.createElement("div")
+    eval.className = "panel"
+    eval.id = "eval"
 
     right.appendChild(moveList)
-    root.appendChild(right)
+    right.appendChild(eval)
 }
 
 function setInterface(){
     setPage()
-    addPanel()
+    addRight()
     addResetButton()
     addFlipButton()
     addColorSelect()
+    addPanel()
 }
 
 setInterface()

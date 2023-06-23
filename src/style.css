@@ -10,11 +10,19 @@
     float:left;
 }
 .right{
+    display:flex;
     width:50%;
     height:50%;
     border:solid;
     border-color:blue;
     margin-left:15px;
-    padding-left:15px;
+    float:left;
+    position:relative;
+}
+.panel{
+    flex: 1 1 32%;
+    height:100%;
+    border:solid;
+    border-color:red;
     float:left;
 }

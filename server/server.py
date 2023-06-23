@@ -3,6 +3,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 import chess
 import chess.engine
+import json
 engine = chess.engine.SimpleEngine.popen_uci(r"server/engines/stockfish7")
 
 hostName = "localhost"
@@ -28,12 +29,14 @@ class MyServer(BaseHTTPRequestHandler):
         length = int(self.headers.get('content-length'))
         data = self.rfile.read(length).decode('utf-8')
         board = chess.Board(data)
-        move = engine.play(board, chess.engine.Limit(time=0.1))
+        move = engine.play(board, chess.engine.Limit(time=0.1)).move.uci()
+        info = engine.analyse(board, chess.engine.Limit(time=0.1))
+        score = str(info["score"].white().score())
+        res = json.dumps({"move":move, "eval": score})
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
-        print(move.move.uci())
-        self.wfile.write(bytes(move.move.uci(), "utf-8"))
+        self.wfile.write(bytes(res, "utf-8"))
 
 if __name__ == "__main__":        
     webServer = HTTPServer((hostName, serverPort), MyServer)

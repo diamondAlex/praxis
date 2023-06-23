@@ -136,11 +136,18 @@ function getMoveFromEngine(fen){
         ret.body.getReader().read()
         .then(({done,value}) =>{
             if(!done){
-                let move = String.fromCharCode(...value)
+                let json = JSON.parse(String.fromCharCode(...value))
+                let move = json.move
+                setEval(json.eval)
                 playEngineMove(move.slice(0,2),move.slice(2,4))
             }
         })
     })
+}
+
+function setEval(eval){
+    let evalPanel = document.getElementById("eval")
+    evalPanel.innerHTML = eval
 }
 
 function clearPanel(){
